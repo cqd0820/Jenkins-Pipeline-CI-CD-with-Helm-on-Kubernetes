@@ -189,37 +189,39 @@ timeout(30) {
             
         }
         
-        stage ('helm test') {
-            
-        // run helm chart linter
-          helmLint(chart_dir)
+        stage ('helm test') { 
+            echo "Start helm test"   
+            // run helm chart linter
+            echo "Run helm chart linter"
+            helmLint(chart_dir)
 
-        // run dry-run helm chart installation
-          helmDeploy(
-            dry_run       : true,
-            name          : config.app.name,
-            chart_dir     : chart_dir,
-            tag           : build_tag,
-            replicas      : config.app.replicas,
-            cpu           : config.app.cpu,
-            memory        : config.app.memory
-           )
-          println "----------------------------------------------------------------------------"
+            // dry-run helm chart installation
+            echo "Dry-run helm chart installation"
+            helmDeploy(
+                dry_run       : true,
+                name          : config.app.name,
+                chart_dir     : chart_dir,
+                tag           : build_tag,
+                replicas      : config.app.replicas,
+                cpu           : config.app.cpu,
+                memory        : config.app.memory
+            )
+            println "----------------------------------------------------------------------------"
         }
         
         stage ('helm deploy') {
-          
-          // Deploy using Helm chart
-          helmDeploy(
-            dry_run       : false,
-            name          : config.app.name,
-            chart_dir     : chart_dir,
-            tag           : build_tag,
-            replicas      : config.app.replicas,
-            cpu           : config.app.cpu,
-            memory        : config.app.memory
-          )
-
+            echo "Start helm deployment"
+            // Deploy using Helm chart
+            helmDeploy(
+                dry_run       : false,
+                name          : config.app.name,
+                chart_dir     : chart_dir,
+                tag           : build_tag,
+                replicas      : config.app.replicas,
+                cpu           : config.app.cpu,
+                memory        : config.app.memory
+            )
+            echo "Deployment Finished..."
         }
         
         ///////////////////////////////////////
