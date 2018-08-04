@@ -91,33 +91,47 @@ timeout(30) {
                     
                     // At this point Nginx is running
                     echo "Docker Container is running"
-                    input 'You can check the running container on docker build server now! Click process to the next stage...'    
+                    input 'You can check the running container on docker build server now! Click proceed to next stage...'    
                     // this pipeline is using 3 tests 
                     // by setting it to more than 3 you can test the error handling and see the pipeline Stage View error message
                     MAX_TESTS = 3
-                    for (test_num = 0; test_num < MAX_TESTS; test_num++) {     
+                    for (test_num = 1; test_num <= MAX_TESTS; test_num++) {     
                        
                         echo "Running Test(${test_num})"
                     
                         expected_results = 0
-                        if (test_num == 0 ) 
+                        if (test_num == 1 ) 
                         {
-                            // Test we can download the home page from the running django docker container
-                            sh "docker exec -t ${container_name} curl -s http://localhost | grep Welcome | wc -l | tr -d '\n' > /tmp/test_results" 
-                            expected_results = 1
-                        }
-                        else if (test_num == 1)
-                        {
-                            // Test that port 80 is exposed
-                            echo "Exposed Docker Ports:"
-                            sh "docker inspect --format '{{ (.NetworkSettings.Ports) }}' ${container_name}"
-                            sh "docker inspect --format '{{ (.NetworkSettings.Ports) }}' ${container_name} | grep map | grep '80/tcp:' | wc -l | tr -d '\n' > /tmp/test_results"
+                            // Test we can download the home page from the running docker container
+                            echo "Check validation of home page"
+                            sh """
+                            set +x
+                            docker exec -t ${container_name} curl -s http://localhost | grep Welcome | wc -l | tr -d '\n' > /tmp/test_results
+                            set -x
+                            """
                             expected_results = 1
                         }
                         else if (test_num == 2)
                         {
+                            // Test if port 80 is exposed
+                            echo "Check if port 80 is exposed"
+                            sh """
+                            set +x
+                            docker inspect --format '{{ (.NetworkSettings.Ports) }}' ${container_name}
+                            docker inspect --format '{{ (.NetworkSettings.Ports) }}' ${container_name} | grep map | grep '80/tcp:' | wc -l | tr -d '\n' > /tmp/test_results
+                            set -x
+                            """
+                            expected_results = 1
+                        }
+                        else if (test_num == 3)
+                        {
                             // Test there's nothing established on the port since nginx is not running:
-                            sh "docker exec -t ${container_name} ss -apn | grep 80 | grep ESTABLISHED | wc -l | tr -d '\n' > /tmp/test_results"
+                            echo "Check if nothing established from nginx container"
+                            sh """
+                            set +x
+                            docker exec -t ${container_name} ss -apn | grep 80 | grep ESTABLISHED | wc -l | tr -d '\n' > /tmp/test_results
+                            set -x
+                            """
                             expected_results = 0
                         }
                         else
