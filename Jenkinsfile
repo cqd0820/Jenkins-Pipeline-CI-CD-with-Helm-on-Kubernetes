@@ -49,6 +49,7 @@ timeout(30) {
         println "----------------------------------------------------------------------------"
         
         stage 'Register DockerHub'
+        echo "[INFO] Register Dockerhub"
         docker.withRegistry("${registry_url}", "${docker_creds_id}") {
         
             // Set up the container to build 
@@ -57,13 +58,14 @@ timeout(30) {
             println "----------------------------------------------------------------------------"
 
             stage "Build Nginx Container"
-            echo "Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
+            echo "[INFO] Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
             container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '.')
             println "----------------------------------------------------------------------------"
             try {
                 
                 // Start Testing
                 stage "Spin up Nginx Container"
+                echo "[INFO] Spin up Nginx Container"
                 
                 // Run the container with the env file, mounted volumes and the ports:
                 docker.image("${maintainer_name}/${container_name}:${build_tag}").withRun("--name=${container_name}  -p 80:80 ")  { c ->
@@ -81,22 +83,22 @@ timeout(30) {
                         """
                         wait_results = readFile '/tmp/wait_results'
 
-                        echo "Wait Results(${wait_results})"
+                        echo "[INFO] Wait Results(${wait_results})"
                         if ("${wait_results}" == "1")
                         {
-                            echo "Nginx is listening on port 80"
+                            echo "[INFO] Nginx is listening on port 80"
                             sh "rm -f /tmp/wait_results"
                             return true
                         }
                         else
                         {
-                            echo "Nginx is not listening on port 80 yet"
+                            echo "[INFO] Nginx is not listening on port 80 yet"
                             return false
                         }
                     } // end of waitUntil
                     
                     // At this point Nginx is running
-                    echo "Docker Container is running"
+                    echo "[INFO] Docker Container is running"
                     input 'You can check the running container on docker build server now! Click Proceed to next stage...'    
                     // this pipeline is using 3 tests 
                     // by setting it to more than 3 you can test the error handling and see the pipeline Stage View error message
@@ -109,7 +111,7 @@ timeout(30) {
                         if (test_num == 1 ) 
                         {
                             // Test we can download the home page from the running docker container
-                            echo "Check validation of home page"
+                            echo "[INFO] Check validation of home page"
                             sh """
                             set +x
                             docker exec -t ${container_name} curl -s http://localhost | grep Welcome | wc -l | tr -d '\n' > /tmp/test_results
@@ -120,7 +122,7 @@ timeout(30) {
                         else if (test_num == 2)
                         {
                             // Test if port 80 is exposed
-                            echo "Check if port 80 is exposed"
+                            echo "[INFO] Check if port 80 is exposed"
                             sh """
                             set +x
                             docker inspect --format '{{ (.NetworkSettings.Ports) }}' ${container_name}
@@ -132,7 +134,7 @@ timeout(30) {
                         else if (test_num == 3)
                         {
                             // Test there's nothing established on the port since nginx is not running:
-                            echo "Check if nothing established from nginx container"
+                            echo "[INFO] Check if nothing established from nginx container"
                             sh """
                             set +x
                             docker exec -t ${container_name} ss -apn | grep 80 | grep ESTABLISHED | wc -l | tr -d '\n' > /tmp/test_results
@@ -143,7 +145,7 @@ timeout(30) {
                         else
                         {
                             err_msg = "Missing Test(${test_num})"
-                            echo "ERROR: ${err_msg}"
+                            echo "[ERROR] ${err_msg}"
                             currentBuild.result = 'FAILURE'
                             error "Failed to finish container testing with Message(${err_msg})"
                         }
@@ -151,7 +153,7 @@ timeout(30) {
                         // Now validate the results match the expected results
                         stage "Test(${test_num}) - Validate Results"
                         test_results = readFile '/tmp/test_results'
-                        echo "Test(${test_num}) Results($test_results) == Expected(${expected_results})"
+                        echo "[INFO] Test(${test_num}) Results($test_results) == Expected(${expected_results})"
                         sh """
                         set +x
                         if [ \"${test_results}\" != \"${expected_results}\" ]; 
@@ -166,7 +168,7 @@ timeout(30) {
                         set -x
                         """
 
-                        echo "Finished Running Test(${test_num})"
+                        echo "[INFO] Finished Running Test(${test_num})"
                     
                         // cleanup after the test run
                         sh "rm -f /tmp/test_results"
@@ -190,13 +192,13 @@ timeout(30) {
         }
         
         stage ('helm test') { 
-            echo "Start helm test"   
+            echo "[INFO] Start helm test"   
             // run helm chart linter
-            echo "Run helm chart linter"
+            echo "[INFO] Run helm chart linter"
             helmLint(chart_dir)
 
             // dry-run helm chart installation
-            echo "Dry-run helm chart installation"
+            echo "[INFO] Dry-run helm chart installation"
             helmDeploy(
                 dry_run       : true,
                 name          : config.app.name,
@@ -210,7 +212,7 @@ timeout(30) {
         }
         
         stage ('helm deploy') {
-            echo "Start helm deployment"
+            echo "[INFO] Start helm deployment"
             // Deploy using Helm chart
             helmDeploy(
                 dry_run       : false,
@@ -221,7 +223,7 @@ timeout(30) {
                 cpu           : config.app.cpu,
                 memory        : config.app.memory
             )
-            echo "Deployment Finished..."
+            echo "[INFO] Deployment Finished..."
         }
         
         ///////////////////////////////////////
