@@ -74,7 +74,11 @@ timeout(30) {
                     // https://issues.jenkins-ci.org/browse/JENKINS-29037
                     //
                     waitUntil {
-                        sh "ss -antup | grep :::80[^0-9] | grep LISTEN | wc -l | tr -d '\n' > /tmp/wait_results"
+                        sh """
+                        set +x
+                        ss -antup | grep :::80[^0-9] | grep LISTEN | wc -l | tr -d '\n' > /tmp/wait_results
+                        set -x
+                        """
                         wait_results = readFile '/tmp/wait_results'
 
                         echo "Wait Results(${wait_results})"
