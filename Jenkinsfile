@@ -46,6 +46,7 @@ timeout(30) {
         def inputFile = readFile('config.json')
         def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
         println "pipeline config ==> ${config}"
+        println "----------------------------------------------------------------------------"
         
         stage 'Register DockerHub'
         docker.withRegistry("${registry_url}", "${docker_creds_id}") {
@@ -53,11 +54,12 @@ timeout(30) {
             // Set up the container to build 
             maintainer_name = "showerlee"
             container_name = "nginx-test"
-            
+            println "----------------------------------------------------------------------------"
 
             stage "Build Nginx Container"
             echo "Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
             container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '.')
+            println "----------------------------------------------------------------------------"
             try {
                 
                 // Start Testing
@@ -143,6 +145,7 @@ timeout(30) {
                         }
                         
                         // Now validate the results match the expected results
+                        println "----------------------------------------------------------------------------"
                         stage "Test(${test_num}) - Validate Results"
                         test_results = readFile '/tmp/test_results'
                         echo "Test(${test_num}) Results($test_results) == Expected(${expected_results})"
@@ -173,12 +176,13 @@ timeout(30) {
                 currentBuild.result = 'FAILURE'
                 error "FAILED - Stopping build for Error(${err_msg})"
             }
-            
+            println "----------------------------------------------------------------------------"
             stage "Push to DockerHub"
             input 'Do you approve to push?'
             container.push()
             
             currentBuild.result = 'SUCCESS'
+            println "----------------------------------------------------------------------------"
             
         }
         
@@ -197,7 +201,7 @@ timeout(30) {
             cpu           : config.app.cpu,
             memory        : config.app.memory
            )
-
+          println "----------------------------------------------------------------------------"
         }
         
         stage ('helm deploy') {
