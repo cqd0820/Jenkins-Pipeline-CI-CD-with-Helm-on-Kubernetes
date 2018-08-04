@@ -30,4 +30,4 @@ cp -i /etc/kubernetes/admin.conf /home/jenkins/.kube/config
 chown jenkins:jenkins /home/jenkins/.kube/config
 ```
 
-Any details please check author's original repo: https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
+Any details please check author's original repo: https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
