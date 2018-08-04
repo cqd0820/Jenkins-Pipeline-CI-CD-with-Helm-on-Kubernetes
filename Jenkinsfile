@@ -56,13 +56,13 @@ timeout(30) {
             container_name = "nginx-test"
             
 
-            stage "Building Nginx Container"
+            stage "Build Nginx Container"
             echo "Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
             container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '.')
             try {
                 
                 // Start Testing
-                stage "Running Nginx container"
+                stage "Spin up Nginx Container"
                 
                 // Run the container with the env file, mounted volumes and the ports:
                 docker.image("${maintainer_name}/${container_name}:${build_tag}").withRun("--name=${container_name}  -p 80:80 ")  { c ->
@@ -161,8 +161,8 @@ timeout(30) {
                 error "FAILED - Stopping build for Error(${err_msg})"
             }
             
-            stage "Pushing to DockerHub"
-            input 'Do you approve Pushing?'
+            stage "Push to DockerHub"
+            input 'Do you approve to push?'
             container.push()
             
             currentBuild.result = 'SUCCESS'
