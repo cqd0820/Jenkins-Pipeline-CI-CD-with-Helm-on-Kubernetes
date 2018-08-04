@@ -30,7 +30,7 @@ def helmDeploy(Map args) {
 
 
 
-timeout(20) {
+timeout(30) {
     node {
         
         // Setup the Docker Registry (Docker Hub) + Credentials 
