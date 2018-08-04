@@ -41,12 +41,13 @@ timeout(30) {
         def pwd = pwd()
         def chart_dir = "${pwd}/charts/newegg-nginx"
             
-        stage 'Check out pipeline from GitHub Repo'
-        git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
+        stage ('Check out pipeline from GitHub Repo') {
+            git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
         
-        def inputFile = readFile('config.json')
-        def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
-        println "pipeline config ==> ${config}"
+            def inputFile = readFile('config.json')
+            def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
+            println "pipeline config ==> ${config}"
+        }
         
         stage 'Register DockerHub'
         docker.withRegistry("${registry_url}", "${docker_creds_id}") {
