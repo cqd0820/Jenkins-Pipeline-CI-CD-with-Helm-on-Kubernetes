@@ -102,7 +102,7 @@ timeout(30) {
                     // by setting it to more than 3 you can test the error handling and see the pipeline Stage View error message
                     MAX_TESTS = 3
                     for (test_num = 1; test_num <= MAX_TESTS; test_num++) {     
-                       
+                        println "----------------------------------------------------------------------------"   
                         echo "Running Test(${test_num})"
                     
                         expected_results = 0
@@ -149,7 +149,6 @@ timeout(30) {
                         }
                         
                         // Now validate the results match the expected results
-                        println "----------------------------------------------------------------------------"
                         stage "Test(${test_num}) - Validate Results"
                         test_results = readFile '/tmp/test_results'
                         echo "Test(${test_num}) Results($test_results) == Expected(${expected_results})"
