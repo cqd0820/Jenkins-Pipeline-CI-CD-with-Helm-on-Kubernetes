@@ -143,7 +143,7 @@ timeout(30) {
                         else 
                             echo \" - Test(${test_num}) Passed\"
                             exit 0
-                        fi"
+                        fi
                         set -x
                         """
 
