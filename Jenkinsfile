@@ -41,14 +41,14 @@ timeout(30) {
         def pwd = pwd()
         def chart_dir = "${pwd}/charts/newegg-nginx"
             
-        stage 'Checking out GitHub Repo'
+        stage 'Check out pipeline from GitHub Repo'
         git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
         
         def inputFile = readFile('config.json')
         def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
         println "pipeline config ==> ${config}"
         
-        stage 'Building Nginx Container for Docker Hub'
+        stage 'Register DockerHub'
         docker.withRegistry("${registry_url}", "${docker_creds_id}") {
         
             // Set up the container to build 
@@ -56,7 +56,7 @@ timeout(30) {
             container_name = "nginx-test"
             
 
-            stage "Building"
+            stage "Building Nginx Container"
             echo "Building Nginx with docker.build(${maintainer_name}/${container_name}:${build_tag})"
             container = docker.build("${maintainer_name}/${container_name}:${build_tag}", '.')
             try {
@@ -133,8 +133,21 @@ timeout(30) {
                         stage "Test(${test_num}) - Validate Results"
                         test_results = readFile '/tmp/test_results'
                         echo "Test(${test_num}) Results($test_results) == Expected(${expected_results})"
-                        sh "if [ \"${test_results}\" != \"${expected_results}\" ]; then echo \" --------------------- Test(${test_num}) Failed--------------------\"; echo \" - Test(${test_num}) Failed\"; echo \" - Test(${test_num}) Failed\";exit 1; else echo \" - Test(${test_num}) Passed\"; exit 0; fi"
-                        echo "Done Running Test(${test_num})"
+                        sh """
+                        set +x
+                        if [ \"${test_results}\" != \"${expected_results}\" ]; 
+                        then 
+                            echo \" --------------------- Test(${test_num}) Failed--------------------\"
+                            echo \" - Test(${test_num}) Failed\"
+                            exit 1
+                        else 
+                            echo \" - Test(${test_num}) Passed\"
+                            exit 0
+                        fi"
+                        set -x
+                        """
+
+                        echo "Finished Running Test(${test_num})"
                     
                         // cleanup after the test run
                         sh "rm -f /tmp/test_results"
@@ -148,7 +161,7 @@ timeout(30) {
                 error "FAILED - Stopping build for Error(${err_msg})"
             }
             
-            stage "Pushing"
+            stage "Pushing to DockerHub"
             input 'Do you approve Pushing?'
             container.push()
             
