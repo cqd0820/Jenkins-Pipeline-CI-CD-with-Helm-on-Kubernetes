@@ -97,7 +97,7 @@ timeout(30) {
                     
                     // At this point Nginx is running
                     echo "Docker Container is running"
-                    input 'You can check the running container on docker build server now! Click proceed to next stage...'    
+                    input 'You can check the running container on docker build server now! Click Proceed to next stage...'    
                     // this pipeline is using 3 tests 
                     // by setting it to more than 3 you can test the error handling and see the pipeline Stage View error message
                     MAX_TESTS = 3
