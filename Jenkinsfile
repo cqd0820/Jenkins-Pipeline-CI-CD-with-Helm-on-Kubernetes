@@ -30,7 +30,7 @@ def helmDeploy(Map args) {
 
 
 
-timeout(time: 600, unit: 'SECONDS') {
+timeout(time: 6000, unit: 'SECONDS') {
     node {   
         // Setup the Docker Registry (Docker Hub) + Credentials 
         registry_url = "https://index.docker.io/v1/" // Docker Hub
