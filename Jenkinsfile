@@ -39,7 +39,7 @@ timeout(time: 1000, unit: 'SECONDS') {
         def pwd = pwd()
         def chart_dir = "${pwd}/charts/newegg-nginx"
         Properties props = new Properties()
-        File propsFile = new File('${pwd}/promote.properties')
+        File propsFile = new File("${pwd}/promote.properties")
         props.load(propsFile.newDataInputStream())
         def build_tag = props.getProperty('BUILD_TAG').toInteger()+0.1;
         println(build_tag)
