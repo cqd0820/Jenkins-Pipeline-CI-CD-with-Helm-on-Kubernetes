@@ -230,6 +230,7 @@ timeout(time: 2000, unit: 'SECONDS') {
         }
         
         stage ('helm deploy') {
+            input 'Do you approve to deploy?'
             echo "[INFO] Start helm deployment"
             // Deploy using Helm chart
             helmDeploy(
