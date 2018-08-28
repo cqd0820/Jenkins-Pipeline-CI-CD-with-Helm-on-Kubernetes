@@ -42,6 +42,7 @@ timeout(time: 1000, unit: 'SECONDS') {
         File propsFile = new File('${pwd}/promote.properties')
         props.load(propsFile.newDataInputStream())
         def build_tag = props.getProperty('BUILD_TAG').toInteger()+0.1;
+        println(build_tag)
                   
         stage 'Check out pipeline from GitHub Repo'
         git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
