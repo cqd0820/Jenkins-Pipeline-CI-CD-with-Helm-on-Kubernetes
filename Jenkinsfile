@@ -30,7 +30,7 @@ def helmDeploy(Map args) {
 
 
 
-timeout(time: 1000, unit: 'SECONDS') {
+timeout(time: 2000, unit: 'SECONDS') {
     node {
         println "----------------------------------------------------------------------------"
         stage 'Check out pipeline from GitHub Repo'
