@@ -45,8 +45,7 @@ timeout(time: 1000, unit: 'SECONDS') {
         props.load(propsFile.newDataInputStream())
         def build_tag_raw = props.getProperty('BUILD_TAG')
         float build_tag = Float.parseFloat(build_tag_raw)+0.1;
-        //float build_tag = props.getProperty('BUILD_TAG')+0.1;
-        println(build_tag)
+        println("Set current build_tag="+build_tag)
         
         def inputFile = readFile('config.json')
         def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
