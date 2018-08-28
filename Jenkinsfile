@@ -43,7 +43,7 @@ timeout(time: 1000, unit: 'SECONDS') {
         Properties props = new Properties()
         File propsFile = new File("${pwd}/promote.properties")
         props.load(propsFile.newDataInputStream())
-        def build_tag = props.getProperty('BUILD_TAG').toInteger()+0.1;
+        int build_tag = props.getProperty('BUILD_TAG').toInteger()+0.1;
         println(build_tag)
         
         def inputFile = readFile('config.json')
