@@ -45,7 +45,7 @@ timeout(time: 1000, unit: 'SECONDS') {
         props.load(propsFile.newDataInputStream())
         def build_tag_raw = props.getProperty('BUILD_TAG')
         float build_tag = Float.parseFloat(build_tag_raw)+0.1;
-        println("Set current build_tag="+build_tag)
+        println("Set current build_tag="+build_tag+" temporarily")
         
         def inputFile = readFile('config.json')
         def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
@@ -189,6 +189,10 @@ timeout(time: 1000, unit: 'SECONDS') {
             stage "Push to DockerHub"
             input 'Do you approve to push?'
             container.push()
+            currentBuild.result = 'SUCCESS'
+            println "----------------------------------------------------------------------------"
+            stage "Push properties to git repo"
+            echo "Push current build_tag="+build_tag+" to git repo"
             sh """
             echo 'BUILD_TAG=${build_tag}' > ${pwd}/promote.properties
             git add ${pwd}/promote.properties
@@ -196,7 +200,6 @@ timeout(time: 1000, unit: 'SECONDS') {
             git push origin master
 
             """
-            currentBuild.result = 'SUCCESS'
             println "----------------------------------------------------------------------------"
             
         }
