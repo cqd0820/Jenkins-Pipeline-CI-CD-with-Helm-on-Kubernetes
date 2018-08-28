@@ -43,8 +43,8 @@ timeout(time: 1000, unit: 'SECONDS') {
         Properties props = new Properties()
         File propsFile = new File("${pwd}/promote.properties")
         props.load(propsFile.newDataInputStream())
-        def build_tag = props.getProperty('BUILD_TAG')
-        float build_tag = Float.parseFloat(build_tag)+0.1;
+        def build_tag_raw = props.getProperty('BUILD_TAG')
+        float build_tag = Float.parseFloat(build_tag_raw)+0.1;
         //float build_tag = props.getProperty('BUILD_TAG')+0.1;
         println(build_tag)
         
