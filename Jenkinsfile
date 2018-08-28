@@ -38,8 +38,10 @@ timeout(time: 1000, unit: 'SECONDS') {
         //build_tag = "1.0" // default tag to push for to the registry       
         def pwd = pwd()
         def chart_dir = "${pwd}/charts/newegg-nginx"
-        def props = readProperties file: "${pwd}/promote.properties";
-        def build_tag = props['BUILD_TAG'].toInteger()+0.1;
+        Properties props = new Properties()
+        File propsFile = new File('${pwd}/promote.properties')
+        props.load(propsFile.newDataInputStream())
+        def build_tag = props.getProperty('BUILD_TAG').toInteger()+0.1;
                   
         stage 'Check out pipeline from GitHub Repo'
         git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
