@@ -31,7 +31,9 @@ def helmDeploy(Map args) {
 
 
 timeout(time: 1000, unit: 'SECONDS') {
-    node {   
+    node {
+        stage 'Check out pipeline from GitHub Repo'
+        git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
         // Setup the Docker Registry (Docker Hub) + Credentials 
         registry_url = "https://index.docker.io/v1/" // Docker Hub
         docker_creds_id = "showerlee-dockerhub" // name of the Jenkins Credentials ID
@@ -43,9 +45,6 @@ timeout(time: 1000, unit: 'SECONDS') {
         props.load(propsFile.newDataInputStream())
         def build_tag = props.getProperty('BUILD_TAG').toInteger()+0.1;
         println(build_tag)
-                  
-        stage 'Check out pipeline from GitHub Repo'
-        git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
         
         def inputFile = readFile('config.json')
         def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
