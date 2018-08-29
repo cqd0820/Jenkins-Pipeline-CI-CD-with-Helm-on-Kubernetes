@@ -197,17 +197,19 @@ timeout(time: 2000, unit: 'SECONDS') {
             println "----------------------------------------------------------------------------"
             stage "Push properties to git repo"
             echo "Push current build_tag="+build_tag+" to git repo"
-            sh """
-            set +x
-            echo 'BUILD_TAG=${build_tag}' > ${pwd}/promote.properties
-            git config --global user.email "showerlee@vip.qq.com"
-            git config --global user.name "showerlee"
-            git add ${pwd}/promote.properties
-            git commit -m"Update docker tag to ${build_tag}"
-            git push origin master
-            set -x
+            withCredentials([usernamePassword(credentialsId: 'showerlee-github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                sh """
+                set +x
+                echo 'BUILD_TAG=${build_tag}' > ${pwd}/promote.properties
+                git config --global user.email "showerlee@vip.qq.com"
+                git config --global user.name "showerlee"
+                git add ${pwd}/promote.properties
+                git commit -m"Update docker tag to ${build_tag}"
+                git push origin master https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git
+                set -x
 
-            """
+                """
+            }
             println "----------------------------------------------------------------------------"
             
         }
