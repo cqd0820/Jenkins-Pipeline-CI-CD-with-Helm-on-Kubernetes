@@ -34,7 +34,10 @@ timeout(time: 2000, unit: 'SECONDS') {
     node {
         println "----------------------------------------------------------------------------"
         stage 'Check out pipeline from GitHub Repo'
-        git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
+        //git url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
+        git branch: 'master',
+            credentialsId: 'showerlee-github',
+            url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
         // Setup the Docker Registry (Docker Hub) + Credentials 
         registry_url = "https://index.docker.io/v1/" // Docker Hub
         docker_creds_id = "showerlee-dockerhub" // name of the Jenkins Credentials ID
