@@ -201,11 +201,8 @@ timeout(time: 2000, unit: 'SECONDS') {
                 sh """
                 set +x
                 echo 'BUILD_TAG=${build_tag}' > ${pwd}/promote.properties
-                git config --global user.email "showerlee@vip.qq.com"
-                git config --global user.name "showerlee"
                 git add ${pwd}/promote.properties
                 git commit -m"Update docker tag to ${build_tag}"
-                echo ${GIT_USERNAME}, ${GIT_PASSWORD}
                 git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git
                 set -x
 
