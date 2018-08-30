@@ -197,13 +197,13 @@ timeout(time: 2000, unit: 'SECONDS') {
             println "----------------------------------------------------------------------------"
             stage "Push properties to git repo"
             echo "Push current build_tag="+build_tag+" to git repo"
-            withCredentials([usernamePassword(credentialsId: 'showerlee-github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            withCredentials([string(credentialsId: 'github-pass', variable: 'pass')]) {
                 sh """
                 set +x
                 echo 'BUILD_TAG=${build_tag}' > ${pwd}/promote.properties
                 git add ${pwd}/promote.properties
                 git commit -m"Update docker tag to ${build_tag}"
-                git push https://123:321@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git
+                git push https://showerlee%40vip.qq.com:${pass}@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git
                 set -x
 
                 """
