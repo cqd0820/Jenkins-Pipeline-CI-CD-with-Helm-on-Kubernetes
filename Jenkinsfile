@@ -192,7 +192,7 @@ timeout(time: 2000, unit: 'SECONDS') {
             println "----------------------------------------------------------------------------"
             stage "Push to DockerHub"
             input 'Do you approve to push?'
-            #container.push()
+            //container.push()
             currentBuild.result = 'SUCCESS'
             println "----------------------------------------------------------------------------"
             stage "Push properties to git repo"
