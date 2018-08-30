@@ -1,7 +1,5 @@
 # Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
 
-Thanks for judexzhu's amazing code.
-
 I have updated a few syntax changes and decorating stuff based on https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes to make the code easy reading.
 
 Apart from that, I put on a few solution of what I have encountered from my deployment provisioning.
