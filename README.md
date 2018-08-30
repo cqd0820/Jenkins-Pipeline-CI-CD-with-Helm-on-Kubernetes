@@ -2,9 +2,9 @@
 
 The following implementation is how to use jenkins CI/CD pipeline in the Kubernetes orchestration with helm.
 
-We can apply the code in Jenkins pipeline job to rollout a Hello-world nginx web instance.
+We can apply the code to Jenkins pipeline job to rollout a Hello-world nginx web instance in k8s cluster
 
-Please proactive the prerequisite before rollout the pipeline.
+Remember to proactive the prerequisite before rollout the pipeline.
 
 
 
