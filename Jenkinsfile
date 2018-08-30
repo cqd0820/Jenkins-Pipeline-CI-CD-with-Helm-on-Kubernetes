@@ -38,19 +38,27 @@ timeout(time: 2000, unit: 'SECONDS') {
         git branch: 'master',
             credentialsId: 'showerlee-github',
             url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
+
         // Setup the Docker Registry (Docker Hub) + Credentials 
         registry_url = "https://index.docker.io/v1/" // Docker Hub
         docker_creds_id = "showerlee-dockerhub" // name of the Jenkins Credentials ID
-        //build_tag = "1.0" // default tag to push for to the registry       
+
         def pwd = pwd()
         def chart_dir = "${pwd}/charts/newegg-nginx"
+
+        // Add build tag version
         Properties props = new Properties()
         File propsFile = new File("${pwd}/promote.properties")
         props.load(propsFile.newDataInputStream())
         def build_tag_raw = props.getProperty('BUILD_TAG')
         float build_tag = Float.parseFloat(build_tag_raw)+0.1;
         println("Set current build_tag="+build_tag+" temporarily")
-        
+
+        //Set build_tag to index.html
+        sh """
+        echo "<h1>Welcome Newegg Nginx Test Version: ${build_tag}</h1>" > index.html
+        """
+
         def inputFile = readFile('config.json')
         def config = new groovy.json.JsonSlurperClassic().parseText(inputFile)
         println "pipeline config ==> ${config}"
@@ -204,7 +212,7 @@ timeout(time: 2000, unit: 'SECONDS') {
                 echo 'BUILD_TAG=${build_tag}' > ${pwd}/promote.properties
                 git config --global user.email "showerlee@vip.qq.com"
                 git config --global user.name "showerlee"
-                git add ${pwd}/promote.properties
+                git add ${pwd}/promote.properties ${pwd}/index.html
                 git commit -m"Update docker tag to ${build_tag}"
                 git push --set-upstream https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git master
                 set -x
