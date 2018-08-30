@@ -51,4 +51,4 @@ chown jenkins:jenkins /home/jenkins/.kube/config
 ```
 ![Jenkins Pipeline](https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes/blob/master/Jenkins/kube-helm-pipeline.png?raw=true "Jenkins Pipeline with Helm on Kubernetes")
 
-#### Any details please check author's original repo: https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
+Any details please check author's original repo: https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
