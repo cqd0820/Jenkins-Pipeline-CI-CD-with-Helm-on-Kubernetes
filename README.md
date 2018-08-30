@@ -1,6 +1,27 @@
 # Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
 
-I have updated a few syntax changes and decorating stuff based on https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes to make the code easy reading.
+The following implementation is how to use jenkins CI/CD pipeline in the Kubernetes orchestration with helm.
+
+We can apply the code in Jenkins pipeline job to rollout a Hello-world nginx web instance.
+
+Please proactive the prerequisit before rollout the pipeline.
+
+
+Prerequisit:
+
+Github
+
+Jenkins 
+
+Docker runner
+
+Dockerhub
+
+Kubernetes cluster
+
+Helm
+
+
 
 Apart from that, I put on a few solution of what I have encountered from my deployment provisioning.
 
