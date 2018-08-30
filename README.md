@@ -4,23 +4,23 @@ The following implementation is how to use jenkins CI/CD pipeline in the Kuberne
 
 We can apply the code in Jenkins pipeline job to rollout a Hello-world nginx web instance.
 
-Please proactive the prerequisit before rollout the pipeline.
+Please proactive the prerequisite before rollout the pipeline.
 
 
 
-#### Prerequisit:
+#### Prerequisite:
 ```
-Github
+Github ===> git repo
 
-Jenkins 
+Jenkins ===> CI/CD management
 
-Docker runner
+Docker ===> container tool
 
-Dockerhub
+Dockerhub ===> docker repo
 
-Kubernetes cluster
+Kubernetes cluster ===> microservice orchestration 
 
-Helm
+Helm ===> kubernetes package manager
 ```
 
 
