@@ -8,7 +8,7 @@ Please proactive the prerequisit before rollout the pipeline.
 
 
 Prerequisit:
-
+```
 Github
 
 Jenkins 
@@ -20,7 +20,7 @@ Dockerhub
 Kubernetes cluster
 
 Helm
-
+```
 
 
 Apart from that, I put on a few solution of what I have encountered from my deployment provisioning.
