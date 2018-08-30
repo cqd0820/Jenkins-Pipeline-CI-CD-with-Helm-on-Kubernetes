@@ -7,7 +7,8 @@ We can apply the code in Jenkins pipeline job to rollout a Hello-world nginx web
 Please proactive the prerequisit before rollout the pipeline.
 
 
-Prerequisit:
+
+### Prerequisit:
 ```
 Github
 
@@ -23,7 +24,7 @@ Helm
 ```
 
 
-Apart from that, I put on a few solution of what I have encountered from my deployment provisioning.
+### Apart from that, I put on a few solution of what I have encountered from my deployment provisioning.
 
 1. Add jenkins user to docker group to fix the issue that Jenkins user can not access to /var/run/docker.sock
 
