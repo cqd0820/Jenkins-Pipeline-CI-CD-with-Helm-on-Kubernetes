@@ -8,7 +8,7 @@ Please proactive the prerequisit before rollout the pipeline.
 
 
 
-### Prerequisit:
+#### Prerequisit:
 ```
 Github
 
@@ -24,7 +24,7 @@ Helm
 ```
 
 
-### Apart from that, I put on a few solution of what I have encountered from my deployment provisioning.
+#### Apart from that, I put on a few workaround of what I have encountered from my deployment provisioning.
 
 1. Add jenkins user to docker group to fix the issue that Jenkins user can not access to /var/run/docker.sock
 
@@ -51,4 +51,4 @@ chown jenkins:jenkins /home/jenkins/.kube/config
 ```
 ![Jenkins Pipeline](https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes/blob/master/Jenkins/kube-helm-pipeline.png?raw=true "Jenkins Pipeline with Helm on Kubernetes")
 
-Any details please check author's original repo: https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
+#### Any details please check author's original repo: https://github.com/judexzhu/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes
