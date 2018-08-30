@@ -206,7 +206,7 @@ timeout(time: 2000, unit: 'SECONDS') {
                 git config --global user.name "showerlee"
                 git add ${pwd}/promote.properties
                 git commit -m"Update docker tag to ${build_tag}"
-                git push --set-upstream https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git master
+                git push --set-upstream https://${GIT_USERNAME}@github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git master
                 set -x
 
                 """
