@@ -40,7 +40,7 @@ timeout(time: 2000, unit: 'SECONDS') {
             url: 'https://github.com/showerlee/Jenkins-Pipeline-CI-CD-with-Helm-on-Kubernetes.git'
 
         // Setup the Docker Registry (Docker Hub) + Credentials 
-        registry_url = "https://registry.docker-cn.com/v2" // Docker Hub
+        registry_url = "https://index.docker.io/v1/" // Docker Hub
         docker_creds_id = "showerlee-dockerhub" // name of the Jenkins Credentials ID
 
         def pwd = pwd()
